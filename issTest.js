@@ -61,63 +61,28 @@ const fetchISSFlyOverTimes = function(coords, callback) {
 
 const nextISSTimesForMyLocation = function(callback) {
   fetchMyIP((error, ip) => {
-    if (error) {
+    if(error) {
       return callback(error, null);
     }
     fetchCoordsByIP(ip, (error, loc) => {
-      if (error) {
+      if(error) {
+        return callback(error, null);
+    }
+    fetchISSFlyOverTimes(loc, (error, nextPasses) => {
+      if(error) {
         return callback(error, null);
       }
-      fetchISSFlyOverTimes(loc, (error, nextPasses) => {
-        if (error) {
-          return callback(error, null);
-        }
 
-        callback(null, nextPasses);
-      });
-    });
-  });
+      callback(null, nextPasses);
+    })
+  }); 
+});
 
-};
+}
+
   
 
 module.exports = { fetchMyIP };
 module.exports = { fetchCoordsByIP };
 module.exports = { fetchISSFlyOverTimes };
 module.exports = { nextISSTimesForMyLocation };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const fetchMyIP = function(callback) {
-//   // use request to fetch IP address from JSON API
-//   request('https://api.ipify.org?format=json', (error, response, body) => {
-//     if (error) {
-//       callback('ERROR');
-//     }
-  
-//     if (response.statusCode !== 200) {
-//       const msg = `Status Code: ${response.statusCode} when fetching IP. Response: ${body}`;
-//       callback(error(msg), null);
-//       return;
-
-//     } else {
-//       const data = JSON.parse(body);
-//       callback(null, data);
-//     }
-  
-//   });
-// };
-
-
-// module.exports = { fetchMyIP };
