@@ -1,5 +1,5 @@
-// // index.js
-//  const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTime } = require('./iss');
+// index.js
+ const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTime } = require('./iss');
 
 // fetchMyIP((error, ip) => {
 //   if (error) {
