@@ -6,14 +6,16 @@ const request = require('request-promise-native');
  * Input: None
  * Returns: Promise of request for ip data, returned as JSON string
  */
-const fetchMyIP = function() {
+const fetchMyIP = function(body) {
   return request('https://api.ipify.org?format=json');
 };
+
 
 const fetchCoordsByIP = function(body) {
   const ip = JSON.parse(body).ip;
   return request(`https://ipvigilante.com/json/${ip}`);
 };
+
 
 const fetchISSFlyOverTimes = function(body) {
   const jason = JSON.parse(body);
@@ -25,14 +27,30 @@ const fetchISSFlyOverTimes = function(body) {
 }
 
 const nextISSTimesForMyLocation = function() {
-  return fetchMyIP()
-    .then(fetchCoordsByIP)
-    .then(fetchISSFlyOverTimes)
-    .then((data) => {
-      const { response } = JSON.parse(data);
-      return response;
+  fetchMyIP()
+  .then(result => {
+
+      // console.log(result)
+      fetchCoordsByIP(result)
+      .then(result2 => {
+
+        // console.log(result2)
+        fetchISSFlyOverTimes(result2)
+        .then(result3 => {
+          console.log(JSON.parse(result3).response)
+        })
+      })
+    }).catch((error) => {
+      console.log("It didn't work: ", error.message);
     });
-};
+  }
+       
+
+
+nextISSTimesForMyLocation()
+
+
+
 
 
 module.exports = { nextISSTimesForMyLocation };
